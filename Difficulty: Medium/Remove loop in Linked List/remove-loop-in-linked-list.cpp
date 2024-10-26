@@ -85,50 +85,38 @@ class Solution {
   public:
     // Function to remove a loop in the linked list.
     void removeLoop(Node* head) {
-        // code here
-        // just remove the loop without losing any nodes
-          if (head == NULL || head->next == NULL) {
-            return; 
-        }
-        int count = 1;
-        Node* fast = head;
-        Node* slow = head;
-        while(fast != NULL && fast->next != NULL){
-            slow = slow->next;
-            fast = fast->next->next;
-            
-            if(slow == fast){
-                if(slow == head || fast == head){
-                    while(slow->next != fast){
-                        slow = slow->next;
-                    }
-                    slow->next = NULL;
-                    return;
-                }
-                while(slow->next != fast){
-                    slow = slow->next;
-                    count++;
-                }
-                break;
-            }
-        }
-        if (fast == NULL || fast->next == NULL) {
+        
+        //no loop present
+        if(head==NULL)
+        {
             return;
         }
-        fast = head;
-        slow = head;
-        while(count--){
-            fast = fast->next;
-        }
-        Node* pre = NULL;
-        while(slow != fast){
-            pre = fast;
+//first we are detecting the loop if present then starting point will be found and the 
+//distance between head and starting point and distance between sp and the point where
+//slow and fast met will be same
+        Node* slow = head;
+        Node* fast = head;
+        Node* pre=NULL;
+        Node* ptr=head; //it will be used when fast and slow will met
+        //pre will be behind slow so eventually it will be behind starting point and 
+        //by pointing it to null we will remove loop
+        while (fast != NULL && fast->next !=NULL)
+        { 
+            pre=slow;
             slow = slow->next;
-            fast = fast->next;
+            fast = fast->next->next;
+            if (slow == fast)
+            {
+                while(ptr!=slow)
+                {
+                  ptr=ptr->next;
+                  pre=slow;
+                  slow=slow->next;
+                }
+                pre->next=NULL;
+            }
         }
-        pre->next = NULL;
-        return ;
-    }
+}
 };
 
 //{ Driver Code Starts.
